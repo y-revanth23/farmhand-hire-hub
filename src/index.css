@@ -2,39 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Farm Equipment Rental System Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Farm-themed color palette */
+    --background: 45 15% 97%;
+    --foreground: 120 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 120 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 120 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Fresh green for farm theme */
+    --primary: 110 65% 35%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 110 65% 30%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary: Earth brown */
+    --secondary: 30 25% 88%;
+    --secondary-foreground: 120 20% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 45 15% 93%;
+    --muted-foreground: 120 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent: Golden harvest */
+    --accent: 45 85% 60%;
+    --accent-foreground: 120 20% 15%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 45 15% 88%;
+    --input: 45 15% 88%;
+    --ring: 110 65% 35%;
+
+    /* Farm-specific colors */
+    --grass-primary: 110 70% 40%;
+    --grass-secondary: 95 60% 45%;
+    --grass-faded: 110 30% 65%;
+    --water-primary: 200 80% 55%;
+    --water-secondary: 210 75% 60%;
+    --earth: 30 40% 60%;
+    --sky: 210 70% 85%;
+
+    /* Gradients */
+    --gradient-grass: linear-gradient(135deg, hsl(var(--grass-primary)), hsl(var(--grass-secondary)));
+    --gradient-water: linear-gradient(45deg, hsl(var(--water-primary)), hsl(var(--water-secondary)));
+    --gradient-sky: linear-gradient(180deg, hsl(var(--sky)), hsl(210 40% 95%));
+    --gradient-earth: linear-gradient(135deg, hsl(var(--earth)), hsl(30 35% 55%));
+
+    /* Shadows with natural tones */
+    --shadow-soft: 0 4px 12px hsl(110 20% 40% / 0.15);
+    --shadow-medium: 0 8px 24px hsl(110 25% 35% / 0.2);
+    --shadow-strong: 0 16px 40px hsl(110 30% 30% / 0.25);
 
     --radius: 0.5rem;
 
@@ -101,5 +124,136 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* 3D Grass Animation */
+  .grass-field {
+    background: var(--gradient-grass);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .grass-field::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      hsl(var(--grass-primary) / 0.1) 2px,
+      transparent 4px
+    );
+    animation: grass-sway 4s ease-in-out infinite;
+  }
+  
+  .grass-faded {
+    background: linear-gradient(135deg, hsl(var(--grass-faded)), hsl(var(--grass-faded) / 0.7));
+    transition: background 0.8s ease;
+  }
+  
+  /* Water Wave Animation */
+  .water-effect {
+    background: var(--gradient-water);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .water-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      hsl(var(--water-primary) / 0.3) 10px,
+      transparent 20px
+    );
+    animation: water-flow 6s linear infinite;
+  }
+  
+  /* 3D Card Effects */
+  .farm-card {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .farm-card:hover {
+    transform: rotateX(5deg) rotateY(5deg) translateZ(10px);
+  }
+  
+  /* Equipment hover effects */
+  .equipment-card {
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .equipment-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-strong);
+  }
+  
+  /* Rental status indicators */
+  .rental-available {
+    background: var(--gradient-grass);
+    animation: pulse-available 2s ease-in-out infinite;
+  }
+  
+  .rental-booked {
+    background: var(--gradient-earth);
+  }
+  
+  .rental-cancelled {
+    background: linear-gradient(135deg, hsl(var(--grass-faded)), hsl(var(--muted)));
+    opacity: 0.6;
+  }
+}
+
+@layer utilities {
+  /* Animation keyframes */
+  @keyframes grass-sway {
+    0%, 100% { transform: translateX(0) skewX(0deg); }
+    50% { transform: translateX(2px) skewX(1deg); }
+  }
+  
+  @keyframes water-flow {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0%); }
+  }
+  
+  @keyframes pulse-available {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Utility classes */
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+  }
+  
+  .shadow-farm {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .text-shadow {
+    text-shadow: 2px 2px 4px hsl(var(--foreground) / 0.1);
   }
 }
