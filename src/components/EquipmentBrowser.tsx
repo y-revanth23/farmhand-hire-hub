@@ -38,7 +38,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       name: "John Deere 8370R Tractor",
       category: "Tractors",
       owner: "Mike's Farm Equipment",
-      location: "Iowa",
+      location: "Madurai",
       price: 450,
       priceUnit: "day",
       rating: 4.8,
@@ -54,7 +54,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       name: "Case IH Combine Harvester",
       category: "Harvesters",
       owner: "Valley Equipment Co.",
-      location: "Nebraska",
+      location: "Virudhunagar",
       price: 800,
       priceUnit: "day",
       rating: 4.9,
@@ -70,7 +70,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       name: "Kubota M7-172 Tractor",
       category: "Tractors",
       owner: "Green Fields Rental",
-      location: "Kansas",
+      location: "Tirunelveli",
       price: 320,
       priceUnit: "day",
       rating: 4.6,
@@ -86,7 +86,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       name: "Versatile 4WD Tractor",
       category: "Tractors",
       owner: "Prairie Equipment",
-      location: "North Dakota",
+      location: "Namakkal",
       price: 650,
       priceUnit: "day",
       rating: 4.7,
@@ -102,7 +102,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       name: "New Holland Plow System",
       category: "Plows",
       owner: "Midwest Farm Tools",
-      location: "Illinois",
+      location: "Madurai",
       price: 180,
       priceUnit: "day",
       rating: 4.5,
@@ -118,7 +118,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       name: "Ford F-550 Farm Truck",
       category: "Trucks",
       owner: "Rural Transport LLC",
-      location: "Missouri",
+      location: "Chennai",
       price: 250,
       priceUnit: "day",
       rating: 4.4,
@@ -133,7 +133,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
 
   const categories = ['All', 'Tractors', 'Harvesters', 'Plows', 'Trucks'];
   const locations = ['All', 'Iowa', 'Nebraska', 'Kansas', 'North Dakota', 'Illinois', 'Missouri'];
-  const priceRanges = ['All', 'Under $200', '$200-$400', '$400-$600', 'Over $600'];
+  const priceRanges = ['All', 'Under ₹200', '₹200-₹400', '₹400-₹600', 'Over ₹600'];
 
   const filteredEquipment = equipment.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -144,16 +144,16 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
     let matchesPrice = true;
     if (priceRange !== 'All') {
       switch (priceRange) {
-        case 'Under $200':
+        case 'Under ₹200':
           matchesPrice = item.price < 200;
           break;
-        case '$200-$400':
+        case '₹200-₹400':
           matchesPrice = item.price >= 200 && item.price <= 400;
           break;
-        case '$400-$600':
+        case '₹400-₹600':
           matchesPrice = item.price >= 400 && item.price <= 600;
           break;
-        case 'Over $600':
+        case 'Over ₹600':
           matchesPrice = item.price > 600;
           break;
       }
@@ -344,9 +344,9 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
                   
                   <div className="flex items-center justify-between pt-2 border-t border-border">
                     <div className="flex items-center space-x-1">
-                      <DollarSign className="w-4 h-4 text-primary" />
+                    
                       <span className="text-lg font-bold text-primary">
-                        ${item.price}
+                        ₹{item.price}
                       </span>
                       <span className="text-sm text-muted-foreground">
                         / {item.priceUnit}
