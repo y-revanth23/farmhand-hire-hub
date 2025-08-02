@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { BookingForm } from "@/components/BookingForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,8 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [priceRange, setPriceRange] = useState('All');
+  const [selectedEquipment, setSelectedEquipment] = useState<any>(null);
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
   // Mock equipment data
   const equipment = [
@@ -132,7 +135,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
   ];
 
   const categories = ['All', 'Tractors', 'Harvesters', 'Plows', 'Trucks'];
-  const locations = ['All', 'Iowa', 'Nebraska', 'Kansas', 'North Dakota', 'Illinois', 'Missouri'];
+  const locations = ['All', 'Chennai', 'Madurai', 'Coimbatore', 'Tirunelveli', 'Virudhunagar', 'Namakkal', 'Salem', 'Erode', 'Dindigul'];
   const priceRanges = ['All', 'Under ₹200', '₹200-₹400', '₹400-₹600', 'Over ₹600'];
 
   const filteredEquipment = equipment.filter(item => {
@@ -162,7 +165,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
     return matchesSearch && matchesCategory && matchesLocation && matchesPrice;
   });
 
-  const handleBookEquipment = (equipment: any) => {
+  const handleBookEquipment = (equipmentItem: any) => {
     if (!currentUser) {
       toast.error('Please login to book equipment');
       setCurrentView('login');
@@ -174,7 +177,14 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
       return;
     }
     
-    toast.success(`Booking request sent for ${equipment.name}`);
+    setSelectedEquipment(equipmentItem);
+    setShowBookingForm(true);
+  };
+
+  const handleBookingComplete = () => {
+    setShowBookingForm(false);
+    setSelectedEquipment(null);
+    setCurrentView('farmer-dashboard');
   };
 
   const getCategoryIcon = (category: string) => {
@@ -212,6 +222,18 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
         return status;
     }
   };
+
+  // Show booking form if selected
+  if (showBookingForm && selectedEquipment) {
+    return (
+      <BookingForm
+        equipment={selectedEquipment}
+        currentUser={currentUser}
+        onBack={() => setShowBookingForm(false)}
+        onBookingComplete={handleBookingComplete}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
