@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tractor, User, LogIn, Menu, X, Settings, Home } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface HeaderProps {
   currentUser: any;
@@ -14,7 +15,8 @@ interface HeaderProps {
 export const Header = ({ currentUser, setCurrentUser, currentView, setCurrentView }: HeaderProps) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setCurrentUser(null);
     setCurrentView('home');
   };

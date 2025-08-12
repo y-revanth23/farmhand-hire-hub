@@ -1,13 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Homepage } from "@/components/Homepage";
 import { LoginForm } from "@/components/LoginForm";
 import { EquipmentBrowser } from "@/components/EquipmentBrowser";
 import { FarmerDashboard } from "@/components/FarmerDashboard";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [currentView, setCurrentView] = useState('home');
+
+  const fetchAndSetCurrentUser = async (uid?: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = uid || user?.id;
+    if (!userId) return;
+    const { data: rolesData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId);
+    const roles = rolesData?.map(r => r.role) || [];
+    const rolePriority = ['admin','owner','farmer','user'] as const;
+    const topRole = (roles as string[]).sort((a,b)=>rolePriority.indexOf(a as any)-rolePriority.indexOf(b as any))[0] || 'user';
+    const roleLabel = topRole === 'admin' ? 'Admin' : topRole === 'owner' ? 'Machine Owner' : topRole === 'farmer' ? 'Farmer' : 'User';
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('display_name, phone, location')
+      .eq('id', userId)
+      .maybeSingle();
+    const name = profile?.display_name || (user?.email ? user.email.split('@')[0] : 'User');
+    setCurrentUser({ id: userId, email: user?.email, name, role: roleLabel, phone: profile?.phone, location: profile?.location });
+  };
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) fetchAndSetCurrentUser(session.user.id);
+      else setCurrentUser(null);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) fetchAndSetCurrentUser(session.user.id);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const renderCurrentView = () => {
     switch (currentView) {

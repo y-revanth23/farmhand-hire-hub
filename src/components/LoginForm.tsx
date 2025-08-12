@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ import {
   MapPin
 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface LoginFormProps {
   setCurrentUser: (user: any) => void;
@@ -64,39 +65,69 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
     }
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const fetchAndSetCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data: rolesData, error: rolesError } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id);
+    if (rolesError) console.error(rolesError);
+    const roles = rolesData?.map(r => r.role) || [];
+    const rolePriority = ['admin','owner','farmer','user'] as const;
+    const topRole = (roles as string[]).sort((a,b)=>rolePriority.indexOf(a as any)-rolePriority.indexOf(b as any))[0] || 'user';
+    const roleLabel = topRole === 'admin' ? 'Admin' : topRole === 'owner' ? 'Machine Owner' : topRole === 'farmer' ? 'Farmer' : 'User';
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('display_name, phone, location')
+      .eq('id', user.id)
+      .maybeSingle();
+    const name = profile?.display_name || (user.email ? user.email.split('@')[0] : 'User');
+    const mapped = { id: user.id, email: user.email, name, role: roleLabel, phone: profile?.phone, location: profile?.location };
+    setCurrentUser(mapped);
+    toast.success(`Welcome, ${mapped.name}!`);
+    const target = roleLabel === 'Admin' ? 'admin-dashboard' : roleLabel === 'Machine Owner' ? 'machine-owner-dashboard' : roleLabel === 'Farmer' ? 'farmer-dashboard' : 'home';
+    setCurrentView(target);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (isLogin) {
-      // Login logic
-      const user = mockUsers.find(u => 
-        u.email === formData.email && u.password === formData.password
-      );
-      
-      if (user) {
-        setCurrentUser(user);
-        toast.success(`Welcome back, ${user.name}!`);
-        setCurrentView(`${user.role.toLowerCase().replace(' ', '-')}-dashboard`);
-      } else {
-        toast.error('Invalid credentials. Try the demo accounts below.');
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
       }
+      await fetchAndSetCurrentUser();
     } else {
-      // Registration logic
-      if (formData.email && formData.password && formData.name) {
-        const newUser = {
-          id: Date.now(),
-          email: formData.email,
-          name: formData.name,
-          role: formData.role,
-          phone: formData.phone,
-          location: formData.location
-        };
-        setCurrentUser(newUser);
-        toast.success(`Account created successfully! Welcome, ${newUser.name}!`);
-        setCurrentView(`${newUser.role.toLowerCase().replace(' ', '-')}-dashboard`);
-      } else {
+      if (!(formData.email && formData.password && formData.name)) {
         toast.error('Please fill in all required fields.');
+        return;
       }
+      const redirectUrl = `${window.location.origin}/`;
+      const roleMeta = formData.role === 'Machine Owner' ? 'owner' : formData.role === 'Farmer' ? 'farmer' : 'user';
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            display_name: formData.name,
+            phone: formData.phone || null,
+            location: formData.location || null,
+            role: roleMeta
+          }
+        }
+      });
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      toast.success('Confirmation email sent. Please check your inbox.');
+      setIsLogin(true);
     }
   };
 
