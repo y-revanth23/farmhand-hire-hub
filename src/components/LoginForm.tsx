@@ -34,36 +34,6 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
     role: 'Farmer'
   });
 
-  // Mock users for demo
-  const mockUsers = [
-    { 
-      id: 1, 
-      email: 'admin@farmrent.com', 
-      password: 'admin123', 
-      name: 'Admin User', 
-      role: 'Admin',
-      phone: '+1234567890',
-      location: 'Headquarters'
-    },
-    { 
-      id: 2, 
-      email: 'owner@farmrent.com', 
-      password: 'owner123', 
-      name: 'John Doe', 
-      role: 'Machine Owner',
-      phone: '+1234567891',
-      location: 'Iowa Farm District'
-    },
-    { 
-      id: 3, 
-      email: 'farmer@farmrent.com', 
-      password: 'farmer123', 
-      name: 'Sarah Wilson', 
-      role: 'Farmer',
-      phone: '+1234567892',
-      location: 'Nebraska Valley'
-    }
-  ];
 
   const fetchAndSetCurrentUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -126,7 +96,7 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
         toast.error(error.message);
         return;
       }
-      toast.success('Confirmation email sent. Please check your inbox.');
+      toast.success('Account created successfully! Please sign in.');
       setIsLogin(true);
     }
   };
@@ -346,32 +316,6 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
               </TabsContent>
             </Tabs>
 
-            {/* Demo Accounts */}
-            <div className="mt-6 pt-6 border-t border-border">
-              <p className="text-sm text-muted-foreground mb-3 text-center">
-                Try these demo accounts:
-              </p>
-              <div className="space-y-2">
-                {mockUsers.map((user, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded text-sm">
-                    <div>
-                      <Badge variant="outline" className="mr-2">{user.role}</Badge>
-                      {user.email}
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => {
-                        setFormData({...formData, email: user.email, password: user.password});
-                        setIsLogin(true);
-                      }}
-                    >
-                      Use
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
