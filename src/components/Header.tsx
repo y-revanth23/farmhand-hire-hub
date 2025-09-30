@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tractor, User, LogIn, Menu, X, Settings, Home, MapPin } from "lucide-react";
+import { Tractor, User, LogIn, Menu, X, Settings, Home } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface HeaderProps {
@@ -24,7 +24,6 @@ export const Header = ({ currentUser, setCurrentUser, currentView, setCurrentVie
   const navigation = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'browse', label: 'Browse Equipment', icon: Tractor },
-    { id: 'map', label: 'Map', icon: MapPin },
   ];
 
   return (

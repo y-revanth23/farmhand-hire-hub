@@ -4,7 +4,6 @@ import { Homepage } from "@/components/Homepage";
 import { LoginForm } from "@/components/LoginForm";
 import { EquipmentBrowser } from "@/components/EquipmentBrowser";
 import { FarmerDashboard } from "@/components/FarmerDashboard";
-import Map from "@/components/Map";
 import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
@@ -53,8 +52,6 @@ const Index = () => {
         return <EquipmentBrowser currentUser={currentUser} setCurrentView={setCurrentView} />;
       case 'farmer-dashboard':
         return <FarmerDashboard currentUser={currentUser} setCurrentView={setCurrentView} />;
-      case 'map':
-        return <Map />;
       case 'machine-owner-dashboard':
         return (
           <div className="min-h-screen bg-background p-8">
