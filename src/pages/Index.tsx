@@ -4,6 +4,7 @@ import { Homepage } from "@/components/Homepage";
 import { LoginForm } from "@/components/LoginForm";
 import { EquipmentBrowser } from "@/components/EquipmentBrowser";
 import { FarmerDashboard } from "@/components/FarmerDashboard";
+import { MachineOwnerDashboard } from "@/components/MachineOwnerDashboard";
 import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
@@ -53,17 +54,7 @@ const Index = () => {
       case 'farmer-dashboard':
         return <FarmerDashboard currentUser={currentUser} setCurrentView={setCurrentView} />;
       case 'machine-owner-dashboard':
-        return (
-          <div className="min-h-screen bg-background p-8">
-            <div className="container mx-auto text-center">
-              <h1 className="text-3xl font-bold mb-4">Machine Owner Dashboard</h1>
-              <p className="text-muted-foreground mb-8">Manage your equipment listings and rental requests</p>
-              <div className="water-effect p-8 rounded-lg">
-                <p className="text-white">Dashboard features: Equipment management, rental requests, earnings tracking</p>
-              </div>
-            </div>
-          </div>
-        );
+        return <MachineOwnerDashboard currentUser={currentUser} setCurrentView={setCurrentView} />;
       case 'admin-dashboard':
         return (
           <div className="min-h-screen bg-background p-8">
