@@ -14,6 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
+      equipment: {
+        Row: {
+          category: string
+          created_at: string | null
+          daily_rate: number
+          description: string | null
+          id: string
+          image_url: string | null
+          location: string
+          name: string
+          owner_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          daily_rate: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          location: string
+          name: string
+          owner_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          daily_rate?: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          location?: string
+          name?: string
+          owner_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          related_id: string | null
+          title: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          related_id?: string | null
+          title: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          related_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null

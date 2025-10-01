@@ -5,6 +5,7 @@ import { LoginForm } from "@/components/LoginForm";
 import { EquipmentBrowser } from "@/components/EquipmentBrowser";
 import { FarmerDashboard } from "@/components/FarmerDashboard";
 import { MachineOwnerDashboard } from "@/components/MachineOwnerDashboard";
+import { AdminDashboard } from "@/components/AdminDashboard";
 import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
@@ -56,17 +57,7 @@ const Index = () => {
       case 'machine-owner-dashboard':
         return <MachineOwnerDashboard currentUser={currentUser} setCurrentView={setCurrentView} />;
       case 'admin-dashboard':
-        return (
-          <div className="min-h-screen bg-background p-8">
-            <div className="container mx-auto text-center">
-              <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-              <p className="text-muted-foreground mb-8">Monitor platform activity and manage users</p>
-              <div className="grass-field p-8 rounded-lg">
-                <p className="text-white">Admin features: User management, equipment approval, platform analytics</p>
-              </div>
-            </div>
-          </div>
-        );
+        return <AdminDashboard currentUser={currentUser} setCurrentView={setCurrentView} />;
       default:
         return <Homepage setCurrentView={setCurrentView} />;
     }

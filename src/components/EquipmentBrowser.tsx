@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { BookingForm } from "@/components/BookingForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +34,59 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
   const [priceRange, setPriceRange] = useState('All');
   const [selectedEquipment, setSelectedEquipment] = useState<any>(null);
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [equipmentList, setEquipmentList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEquipment();
+  }, []);
+
+  const fetchEquipment = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('equipment')
+        .select('*')
+        .in('status', ['available', 'rented'])
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      // Fetch owner profiles separately
+      const ownerIds = [...new Set((data || []).map(item => item.owner_id))];
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, display_name')
+        .in('id', ownerIds);
+      
+      const profileMap = new Map(profiles?.map(p => [p.id, p.display_name]) || []);
+      
+      // Transform the data to match the expected format
+      const transformedData = (data || []).map(item => ({
+        id: item.id,
+        name: item.name,
+        category: item.category,
+        owner: profileMap.get(item.owner_id) || 'Unknown Owner',
+        location: item.location,
+        price: Number(item.daily_rate),
+        priceUnit: 'day',
+        rating: 4.5,
+        reviews: 0,
+        image: item.image_url || "/api/placeholder/300/200",
+        status: item.status,
+        description: item.description || 'No description available',
+        specifications: 'See details',
+        availability: item.status === 'available' ? 'Available now' : 'Currently rented'
+      }));
+      
+      setEquipmentList(transformedData);
+    } catch (error: any) {
+      console.error('Error fetching equipment:', error);
+      toast.error('Failed to load equipment');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Mock equipment data
   const equipment = [
@@ -138,7 +192,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
   const locations = ['All', 'Chennai', 'Madurai', 'Coimbatore', 'Tirunelveli', 'Virudhunagar', 'Namakkal', 'Salem', 'Erode', 'Dindigul'];
   const priceRanges = ['All', 'Under ₹200', '₹200-₹400', '₹400-₹600', 'Over ₹600'];
 
-  const filteredEquipment = equipment.filter(item => {
+  const filteredEquipment = equipmentList.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
@@ -310,13 +364,26 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
 
         {/* Results count */}
         <div className="mb-6">
-          <p className="text-muted-foreground">
-            Showing {filteredEquipment.length} of {equipment.length} equipment
-          </p>
+          {loading ? (
+            <p className="text-muted-foreground">Loading equipment...</p>
+          ) : (
+            <p className="text-muted-foreground">
+              Showing {filteredEquipment.length} of {equipmentList.length} equipment
+            </p>
+          )}
         </div>
 
         {/* Equipment Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">Loading equipment...</p>
+          </div>
+        ) : filteredEquipment.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No equipment found matching your filters</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEquipment.map((item) => {
             const CategoryIcon = getCategoryIcon(item.category);
             
@@ -399,8 +466,9 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
             );
           })}
         </div>
+        )}
 
-        {filteredEquipment.length === 0 && (
+        {!loading && filteredEquipment.length === 0 && (
           <div className="text-center py-12">
             <Tractor className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">No equipment found</h3>

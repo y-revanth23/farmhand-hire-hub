@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,8 @@ import {
   Package,
   Settings
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { AddEquipmentDialog } from "@/components/AddEquipmentDialog";
 
 interface MachineOwnerDashboardProps {
   currentUser: any;
@@ -24,6 +26,26 @@ interface MachineOwnerDashboardProps {
 
 export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOwnerDashboardProps) => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [myEquipmentList, setMyEquipmentList] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchMyEquipment();
+  }, []);
+
+  const fetchMyEquipment = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('equipment')
+        .select('*')
+        .eq('owner_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setMyEquipmentList(data || []);
+    } catch (error: any) {
+      console.error('Error fetching equipment:', error);
+    }
+  };
 
   // Mock data for machine owner
   const stats = [
@@ -186,11 +208,7 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
                 Manage your equipment listings and rental requests
               </p>
             </div>
-            <Button 
-              className="bg-white text-primary hover:bg-white/90"
-            >
-              Add New Equipment
-            </Button>
+            <AddEquipmentDialog onEquipmentAdded={fetchMyEquipment} />
           </div>
         </div>
       </div>
@@ -329,7 +347,13 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {myEquipment.map((equipment) => (
+                  {myEquipmentList.length === 0 ? (
+                    <div className="text-center py-8">
+                      <p className="text-muted-foreground mb-4">No equipment added yet</p>
+                      <AddEquipmentDialog onEquipmentAdded={fetchMyEquipment} />
+                    </div>
+                  ) : (
+                    myEquipmentList.map((equipment) => (
                     <Card key={equipment.id} className="equipment-card">
                       <CardContent className="pt-6">
                         <div className="flex items-start justify-between mb-4">
@@ -391,7 +415,7 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                  )))}
                 </div>
               </CardContent>
             </Card>
