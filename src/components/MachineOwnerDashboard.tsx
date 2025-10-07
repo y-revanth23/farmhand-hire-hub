@@ -65,7 +65,7 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
     },
     {
       title: "Monthly Earnings",
-      value: "$12,450",
+      value: "₹12,450",
       icon: DollarSign,
       color: "text-accent",
       bgColor: "bg-accent/10"
@@ -369,7 +369,7 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
                             <DollarSign className="w-4 h-4 text-muted-foreground" />
                             <div>
                               <p className="text-sm text-muted-foreground">Daily Rate</p>
-                              <p className="font-medium">${equipment.dailyRate}</p>
+                              <p className="font-medium">₹{equipment.dailyRate}</p>
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -465,7 +465,7 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
                             <DollarSign className="w-4 h-4 text-muted-foreground" />
                             <div>
                               <p className="text-sm text-muted-foreground">Total Cost</p>
-                              <p className="font-medium">${request.totalCost}</p>
+                              <p className="font-medium">₹{request.totalCost}</p>
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -506,22 +506,22 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="mb-6 p-6 bg-gradient-to-r from-accent/20 to-primary/20 rounded-lg">
-                  <div className="grid sm:grid-cols-3 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">This Month</p>
-                      <p className="text-2xl font-bold">$12,450</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Last Month</p>
-                      <p className="text-2xl font-bold">$10,890</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Total Earnings</p>
-                      <p className="text-2xl font-bold">$48,320</p>
+                  <div className="mb-6 p-6 bg-gradient-to-r from-accent/20 to-primary/20 rounded-lg">
+                    <div className="grid sm:grid-cols-3 gap-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground">This Month</p>
+                        <p className="text-2xl font-bold">₹12,450</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Last Month</p>
+                        <p className="text-2xl font-bold">₹10,890</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Total Earnings</p>
+                        <p className="text-2xl font-bold">₹48,320</p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
                 <div className="space-y-4">
                   {recentEarnings.map((item) => (
@@ -542,7 +542,7 @@ export const MachineOwnerDashboard = ({ currentUser, setCurrentView }: MachineOw
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground">Amount Earned</p>
-                            <p className="font-medium text-accent">${item.amount}</p>
+                            <p className="font-medium text-accent">₹{item.amount}</p>
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground">Date</p>

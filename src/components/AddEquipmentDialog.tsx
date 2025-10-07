@@ -102,7 +102,7 @@ export const AddEquipmentDialog = ({ onEquipmentAdded }: AddEquipmentDialogProps
             <Label htmlFor="name">Equipment Name *</Label>
             <Input
               id="name"
-              placeholder="e.g., John Deere 8370R Tractor"
+              placeholder="John Deere 8370R Tractor"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
@@ -135,7 +135,7 @@ export const AddEquipmentDialog = ({ onEquipmentAdded }: AddEquipmentDialogProps
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
-              placeholder="Describe your equipment, its condition, and any special features..."
+              placeholder="High-performance tractor perfect for large-scale farming operations"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
@@ -143,13 +143,13 @@ export const AddEquipmentDialog = ({ onEquipmentAdded }: AddEquipmentDialogProps
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="daily_rate">Daily Rate ($) *</Label>
+            <Label htmlFor="daily_rate">Daily Rate (₹) *</Label>
             <Input
               id="daily_rate"
               type="number"
               step="0.01"
               min="0"
-              placeholder="e.g., 450.00"
+              placeholder="450.00"
               value={formData.daily_rate}
               onChange={(e) => setFormData({ ...formData, daily_rate: e.target.value })}
               required
@@ -160,7 +160,7 @@ export const AddEquipmentDialog = ({ onEquipmentAdded }: AddEquipmentDialogProps
             <Label htmlFor="location">Location *</Label>
             <Input
               id="location"
-              placeholder="e.g., Iowa Farm District"
+              placeholder="Madurai"
               value={formData.location}
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
               required

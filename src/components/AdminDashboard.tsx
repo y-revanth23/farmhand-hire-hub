@@ -314,7 +314,7 @@ export const AdminDashboard = ({ currentUser, setCurrentView }: AdminDashboardPr
                             </div>
                             <div>
                               <p className="text-sm text-muted-foreground">Daily Rate</p>
-                              <p className="font-medium">${equipment.daily_rate}</p>
+                              <p className="font-medium">₹{equipment.daily_rate}</p>
                             </div>
                             <div>
                               <p className="text-sm text-muted-foreground">Location</p>

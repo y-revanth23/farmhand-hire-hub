@@ -312,7 +312,7 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
                 <div className="relative">
                   <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search equipment..."
+                    placeholder="John Deere Tractor"
                     className="pl-10"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}

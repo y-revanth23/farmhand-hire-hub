@@ -180,7 +180,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                       id="fullName"
                       value={formData.fullName}
                       onChange={(e) => handleInputChange('fullName', e.target.value)}
-                      placeholder="Enter your full name"
+                      placeholder="Rajesh Kumar"
                     />
                   </div>
                   <div>
@@ -190,7 +190,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      placeholder="Enter your email"
+                      placeholder="rajesh@email.com"
                     />
                   </div>
                 </div>
@@ -210,7 +210,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                       id="farmSize"
                       value={formData.farmSize}
                       onChange={(e) => handleInputChange('farmSize', e.target.value)}
-                      placeholder="e.g., 50 acres"
+                      placeholder="50 acres"
                     />
                   </div>
                 </div>
@@ -220,7 +220,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                     id="address"
                     value={formData.address}
                     onChange={(e) => handleInputChange('address', e.target.value)}
-                    placeholder="Enter your complete address"
+                    placeholder="123 Main Street, Madurai, Tamil Nadu 625001"
                     rows={3}
                   />
                 </div>
@@ -285,7 +285,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                       min="1"
                       value={formData.duration}
                       onChange={(e) => handleInputChange('duration', e.target.value)}
-                      placeholder="Number of days"
+                      placeholder="5"
                     />
                   </div>
                 </div>
@@ -295,7 +295,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                     id="purpose"
                     value={formData.purpose}
                     onChange={(e) => handleInputChange('purpose', e.target.value)}
-                    placeholder="e.g., Plowing, Harvesting, Transportation"
+                    placeholder="Plowing, Harvesting, Transportation"
                   />
                 </div>
                 <div>
@@ -304,7 +304,7 @@ export const BookingForm = ({ equipment, currentUser, onBack, onBookingComplete 
                     id="specialRequirements"
                     value={formData.specialRequirements}
                     onChange={(e) => handleInputChange('specialRequirements', e.target.value)}
-                    placeholder="Any special requirements or notes"
+                    placeholder="Need operator assistance, require GPS guidance system"
                     rows={2}
                   />
                 </div>

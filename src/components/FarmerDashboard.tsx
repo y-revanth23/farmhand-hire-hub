@@ -36,7 +36,7 @@ export const FarmerDashboard = ({ currentUser, setCurrentView }: FarmerDashboard
     },
     {
       title: "Total Spent",
-      value: "$2,450",
+      value: "₹2,450",
       icon: DollarSign,
       color: "text-accent",
       bgColor: "bg-accent/10"
@@ -301,7 +301,7 @@ export const FarmerDashboard = ({ currentUser, setCurrentView }: FarmerDashboard
                             <DollarSign className="w-4 h-4 text-muted-foreground" />
                             <div>
                               <p className="text-sm text-muted-foreground">Daily Rate</p>
-                              <p className="font-medium">${rental.dailyRate}</p>
+                              <p className="font-medium">₹{rental.dailyRate}</p>
                             </div>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -362,7 +362,7 @@ export const FarmerDashboard = ({ currentUser, setCurrentView }: FarmerDashboard
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground">Total Cost</p>
-                            <p className="font-medium">${item.cost}</p>
+                            <p className="font-medium">₹{item.cost}</p>
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground">Date</p>

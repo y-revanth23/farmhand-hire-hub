@@ -170,7 +170,7 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
                       <Input
                         id="email"
                         type="email"
-                        placeholder="your@email.com"
+                        placeholder="rajesh@email.com"
                         className="pl-10"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -225,7 +225,7 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
                       <Input
                         id="reg-email"
                         type="email"
-                        placeholder="your@email.com"
+                        placeholder="rajesh@email.com"
                         className="pl-10"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -240,7 +240,7 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
                       <Phone className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="phone"
-                        placeholder="+1 (555) 123-4567"
+                        placeholder="+91 9876543210"
                         className="pl-10"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
@@ -254,7 +254,7 @@ export const LoginForm = ({ setCurrentUser, setCurrentView }: LoginFormProps) =>
                       <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="location"
-                        placeholder="City, State"
+                        placeholder="Madurai, Tamil Nadu"
                         className="pl-10"
                         value={formData.location}
                         onChange={(e) => setFormData({...formData, location: e.target.value})}
