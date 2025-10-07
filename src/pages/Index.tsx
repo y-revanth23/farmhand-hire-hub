@@ -16,21 +16,30 @@ const Index = () => {
     const { data: { user } } = await supabase.auth.getUser();
     const userId = uid || user?.id;
     if (!userId) return;
+    
+    console.log('Fetching user roles for:', userId);
     const { data: rolesData } = await supabase
       .from('user_roles')
       .select('role')
       .eq('user_id', userId);
+    
+    console.log('User roles:', rolesData);
     const roles = rolesData?.map(r => r.role) || [];
     const rolePriority = ['admin','owner','farmer','user'] as const;
     const topRole = (roles as string[]).sort((a,b)=>rolePriority.indexOf(a as any)-rolePriority.indexOf(b as any))[0] || 'user';
     const roleLabel = topRole === 'admin' ? 'Admin' : topRole === 'owner' ? 'Machine Owner' : topRole === 'farmer' ? 'Farmer' : 'User';
+    
     const { data: profile } = await supabase
       .from('profiles')
       .select('display_name, phone, location')
       .eq('id', userId)
       .maybeSingle();
+    
     const name = profile?.display_name || (user?.email ? user.email.split('@')[0] : 'User');
-    setCurrentUser({ id: userId, email: user?.email, name, role: roleLabel, phone: profile?.phone, location: profile?.location });
+    const userData = { id: userId, email: user?.email, name, role: roleLabel, phone: profile?.phone, location: profile?.location };
+    
+    console.log('Setting current user:', userData);
+    setCurrentUser(userData);
   };
 
   useEffect(() => {
@@ -45,6 +54,8 @@ const Index = () => {
   }, []);
 
   const renderCurrentView = () => {
+    console.log('Rendering view:', currentView, 'Current user:', currentUser);
+    
     switch (currentView) {
       case 'home':
         return <Homepage setCurrentView={setCurrentView} />;

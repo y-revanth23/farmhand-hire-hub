@@ -44,11 +44,14 @@ export const EquipmentBrowser = ({ currentUser, setCurrentView }: EquipmentBrows
   const fetchEquipment = async () => {
     try {
       setLoading(true);
+      console.log('Fetching equipment...');
       const { data, error } = await supabase
         .from('equipment')
         .select('*')
-        .in('status', ['available', 'rented'])
+        .in('status', ['approved', 'available', 'rented'])
         .order('created_at', { ascending: false });
+      
+      console.log('Equipment fetch result:', { data, error });
 
       if (error) throw error;
       
